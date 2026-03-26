@@ -233,6 +233,27 @@
   .footer-note p      { font-size: 14px; line-height: 1.7; }
   .footer-note strong { font-size: 16px; display: block; margin-bottom: 4px; }
 
+  /* ── VALIDACIÓN ── */
+  .campo-error .text-input,
+  .campo-error select.text-input {
+    border-color: #E53935 !important;
+    background: #FFF5F5 !important;
+  }
+
+  .msg-campo-error {
+    display: none;
+    color: #E53935;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+
+  .campo-error .msg-campo-error { display: block; }
+
+  .card.campo-error {
+    border-color: #E53935;
+  }
+
   @media print {
     body { background: white; padding: 0; }
     .card { break-inside: avoid; border: 1px solid #ccc; }
@@ -264,7 +285,8 @@
     <div class="q-number">1</div>
     <div class="q-label">¿Cómo te llamas?</div>
     <div class="q-hint">Solo tu nombre, como prefieras que te llamen.</div>
-    <input type="text" id="nombre" class="text-input" placeholder="Tu nombre aquí..." style="height: 48px;">
+    <input type="text" id="nombre" class="text-input" placeholder="Tu nombre aquí..." oninput="quitarError('nombre')" style="height: 48px;">
+    <div class="msg-campo-error" id="err-nombre">⚠️ Por favor escribe tu nombre</div>
   </div>
 
   <!-- P2: País -->
@@ -272,7 +294,7 @@
     <div class="q-number">2</div>
     <div class="q-label">¿De qué país eres?</div>
     <div class="q-hint">Selecciona tu país de residencia actual.</div>
-    <select id="pais" class="text-input" style="height:48px;cursor:pointer;appearance:auto;">
+    <select id="pais" class="text-input" style="height:48px;cursor:pointer;appearance:auto;" onchange="quitarError('pais')">
       <option value="">— Elige tu país —</option>
       <option value="México">🇲🇽 México</option>
       <option value="Argentina">🇦🇷 Argentina</option>
@@ -296,6 +318,7 @@
       <option value="Venezuela">🇻🇪 Venezuela</option>
       <option value="Otro">🌎 Otro</option>
     </select>
+    <div class="msg-campo-error" id="err-pais">⚠️ Por favor selecciona tu país</div>
   </div>
 
   <!-- P3: WhatsApp -->
@@ -303,7 +326,8 @@
     <div class="q-number">3</div>
     <div class="q-label">¿Cuál es tu número de WhatsApp?</div>
     <div class="q-hint">Incluye el código de tu país. Ejemplo: +52 para México, +54 Argentina, +57 Colombia…</div>
-    <input type="tel" id="whatsapp" class="text-input" placeholder="Ej. +52 477 123 4567" style="height:48px;">
+    <input type="tel" id="whatsapp" class="text-input" placeholder="Ej. +52 477 123 4567" oninput="quitarError('whatsapp')" style="height:48px;">
+    <div class="msg-campo-error" id="err-whatsapp">⚠️ Por favor ingresa tu número de WhatsApp</div>
   </div>
 
   <!-- P4: Edad -->
@@ -511,11 +535,43 @@
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  async function enviarFormulario() {
-    if (!document.getElementById("nombre").value.trim()) {
-      alert("Por favor escribe tu nombre antes de enviar 😊");
-      return;
+  function quitarError(id) {
+    const card = document.getElementById(id)?.closest(".card");
+    if (card) card.classList.remove("campo-error");
+  }
+
+  function validarFormulario() {
+    let valido = true;
+    let primerError = null;
+
+    const campos = [
+      { id: "nombre",   errId: "err-nombre",   msg: "Por favor escribe tu nombre" },
+      { id: "pais",     errId: "err-pais",      msg: "Por favor selecciona tu país" },
+      { id: "whatsapp", errId: "err-whatsapp",  msg: "Por favor ingresa tu WhatsApp" },
+    ];
+
+    // Limpiar errores previos
+    document.querySelectorAll(".campo-error").forEach(el => el.classList.remove("campo-error"));
+
+    campos.forEach(({ id, errId }) => {
+      const el = document.getElementById(id);
+      const val = el.tagName === "SELECT" ? el.value : el.value.trim();
+      if (!val) {
+        el.closest(".card").classList.add("campo-error");
+        if (!primerError) primerError = el;
+        valido = false;
+      }
+    });
+
+    if (primerError) {
+      primerError.closest(".card").scrollIntoView({ behavior: "smooth", block: "center" });
     }
+
+    return valido;
+  }
+
+  async function enviarFormulario() {
+    if (!validarFormulario()) return;
 
     const btn = document.getElementById("btnEnviar");
     btn.disabled = true;
