@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuestionario – Clases de IA para Cuidadores</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terracotta: #C1714B;
+    --warm-sand: #F5EDE0;
+    --sage: #7A9E7E;
+    --deep: #2C2A27;
+    --muted: #8A7F74;
+    --card: #FFFAF5;
+    --border: #E0D4C3;
+    --accent-light: #FDF0E6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--warm-sand);
+    font-family: 'Nunito', sans-serif;
+    color: var(--deep);
+    min-height: 100vh;
+    padding: 32px 16px 60px;
+  }
+
+  .page { max-width: 680px; margin: 0 auto; }
+
+  .header { text-align: center; margin-bottom: 36px; }
+
+  .header-badge {
+    display: inline-block;
+    background: var(--sage);
+    color: white;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-family: 'Lora', serif;
+    font-size: 28px;
+    color: var(--terracotta);
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+
+  .header p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto;
+    font-style: italic;
+    font-family: 'Lora', serif;
+  }
+
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: var(--terracotta);
+    border-radius: 2px;
+    margin: 16px auto 0;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .q-number {
+    position: absolute;
+    top: -12px;
+    left: 24px;
+    background: var(--terracotta);
+    color: white;
+    font-size: 12px;
+    font-weight: 800;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .q-label { font-size: 16px; font-weight: 700; color: var(--deep); margin-bottom: 4px; line-height: 1.4; }
+  .q-hint  { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .options.inline { flex-direction: row; flex-wrap: wrap; gap: 10px; }
+
+  .option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: white;
+    font-size: 15px;
+    line-height: 1.4;
+    transition: border-color 0.2s, background 0.2s;
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .option-label:hover { border-color: var(--terracotta); background: var(--accent-light); }
+
+  input[type="radio"], input[type="checkbox"] {
+    accent-color: var(--terracotta);
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .text-input {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 15px;
+    font-family: 'Nunito', sans-serif;
+    color: var(--deep);
+    background: white;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+    line-height: 1.5;
+  }
+
+  .text-input:focus { border-color: var(--terracotta); background: var(--accent-light); }
+
+  .days-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+
+  .day-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .day-option:hover { border-color: var(--sage); background: #EEF5EE; }
+
+  .horario-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .scale { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .scale-label { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .scale-options { display: flex; gap: 8px; flex: 1; justify-content: space-around; }
+
+  .scale-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+
+  .scale-circle {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .scale-item input { display: none; }
+  .scale-item input:checked + .scale-circle { background: var(--terracotta); border-color: var(--terracotta); color: white; }
+  .scale-item:hover .scale-circle { border-color: var(--terracotta); color: var(--terracotta); }
+
+  /* ── BOTÓN ENVIAR ── */
+  .submit-area { text-align: center; margin: 8px 0 16px; }
+
+  .btn-enviar {
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 18px 48px;
+    font-size: 17px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 14px rgba(193,113,75,0.35);
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .btn-enviar:hover  { background: #a85d3a; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(193,113,75,0.4); }
+  .btn-enviar:active { transform: translateY(0); }
+  .btn-enviar:disabled { background: var(--muted); cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* ── MENSAJES ── */
+  .msg { display: none; border-radius: 14px; padding: 20px 24px; text-align: center; margin-top: 8px; }
+  .msg.visible { display: block; }
+
+  .msg-enviando { background: #FFF3E0; border: 1.5px solid #FFB74D; color: #7B4F00; font-size: 15px; }
+
+  .msg-exito { background: var(--sage); color: white; font-size: 15px; line-height: 1.7; }
+  .msg-exito strong { font-size: 20px; display: block; margin-bottom: 6px; }
+
+  .msg-error { background: #FFF0F0; border: 1.5px solid #EF9A9A; color: #7B0000; font-size: 15px; }
+
+  /* ── FOOTER ── */
+  .footer-note {
+    background: var(--sage);
+    color: white;
+    border-radius: 14px;
+    padding: 20px 24px;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .footer-note p      { font-size: 14px; line-height: 1.7; }
+  .footer-note strong { font-size: 16px; display: block; margin-bottom: 4px; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .card { break-inside: avoid; border: 1px solid #ccc; }
+    .header-badge, .q-number { background: #555 !important; }
+    .submit-area, .msg { display: none !important; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  @media (max-width: 500px) {
+    .card { padding: 22px 18px; }
+    .header h1 { font-size: 22px; }
+    .scale-circle { width: 34px; height: 34px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-badge">🤖 Clases de Inteligencia Artificial</div>
+    <h1>Cuéntame un poco de ti</h1>
+    <p>Para preparar las clases de la mejor manera posible, me ayudaría mucho conocerte un poco más. No hay respuestas correctas ni incorrectas.</p>
+    <div class="divider"></div>
+  </div>
+
+  <!-- P1: Nombre -->
+  <div class="card">
+    <div class="q-number">1</div>
+    <div class="q-label">¿Cómo te llamas?</div>
+    <div class="q-hint">Solo tu nombre, como prefieras que te llamen.</div>
+    <input type="text" id="nombre" class="text-input" placeholder="Tu nombre aquí..." style="height: 48px;">
+  </div>
+
+  <!-- P2: Edad -->
+  <div class="card">
+    <div class="q-number">2</div>
+    <div class="q-label">¿En qué rango de edad estás?</div>
+    <div class="options inline">
+      <label class="option-label"><input type="radio" name="edad" value="Menos de 30"> Menos de 30</label>
+      <label class="option-label"><input type="radio" name="edad" value="30–45"> 30 – 45</label>
+      <label class="option-label"><input type="radio" name="edad" value="46–60"> 46 – 60</label>
+      <label class="option-label"><input type="radio" name="edad" value="Más de 60"> Más de 60</label>
+    </div>
+  </div>
+
+  <!-- P3: Ocupación -->
+  <div class="card">
+    <div class="q-number">3</div>
+    <div class="q-label">¿A qué te dedicas actualmente?</div>
+    <div class="q-hint">Puedes marcar más de una si aplica.</div>
+    <div class="options">
+      <label class="option-label"><input type="checkbox" name="ocupacion" value="Ama/o de casa o cuidadora"> Ama/o de casa o cuidadora de tiempo completo</label>
+      <label class="option-label"><input type="checkbox" name="ocupacion" value="Empleada/o"> Trabajo fuera de casa (empleada/o)</label>
+      <label class="option-label"><input type="checkbox" name="ocupacion" value="Negocio propio"> Trabajo por mi cuenta o tengo negocio propio</label>
+      <label class="option-label"><input type="checkbox" name="ocupacion" value="Jubilada/o"> Estoy jubilada/o o pensionada/o</label>
+      <label class="option-label"><input type="checkbox" name="ocupacion" value="Buscando trabajo"> Estoy buscando trabajo</label>
+      <label class="option-label">
+        <input type="checkbox" name="ocupacion" value="Otro">
+        <div style="flex:1">Otro:
+          <input type="text" id="ocup-otro" class="text-input" style="height:36px;margin-top:4px;" placeholder="¿Cuál?">
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!-- P4: Dispositivo -->
+  <div class="card">
+    <div class="q-number">4</div>
+    <div class="q-label">¿Con qué dispositivo sueles conectarte?</div>
+    <div class="q-hint">Marca todos los que tengas disponibles.</div>
+    <div class="options inline">
+      <label class="option-label"><input type="checkbox" name="dispositivo" value="Celular"> 📱 Celular</label>
+      <label class="option-label"><input type="checkbox" name="dispositivo" value="Computadora"> 💻 Computadora</label>
+      <label class="option-label"><input type="checkbox" name="dispositivo" value="Tablet"> 📟 Tablet</label>
+      <label class="option-label"><input type="checkbox" name="dispositivo" value="Sin dispositivo"> ❌ Por ahora no tengo</label>
+    </div>
+  </div>
+
+  <!-- P5: Comodidad tecnológica -->
+  <div class="card">
+    <div class="q-number">5</div>
+    <div class="q-label">¿Qué tan cómoda/o te sientes usando el celular o la computadora?</div>
+    <div class="scale">
+      <span class="scale-label">Poco 😬</span>
+      <div class="scale-options">
+        <label class="scale-item"><input type="radio" name="tech" value="1"><div class="scale-circle">1</div></label>
+        <label class="scale-item"><input type="radio" name="tech" value="2"><div class="scale-circle">2</div></label>
+        <label class="scale-item"><input type="radio" name="tech" value="3"><div class="scale-circle">3</div></label>
+        <label class="scale-item"><input type="radio" name="tech" value="4"><div class="scale-circle">4</div></label>
+        <label class="scale-item"><input type="radio" name="tech" value="5"><div class="scale-circle">5</div></label>
+      </div>
+      <span class="scale-label">Mucho 😊</span>
+    </div>
+  </div>
+
+  <!-- P6: Conoce IA -->
+  <div class="card">
+    <div class="q-number">6</div>
+    <div class="q-label">¿Has escuchado o usado alguna herramienta de Inteligencia Artificial?</div>
+    <div class="q-hint">Como ChatGPT, Gemini, Copilot, filtros de fotos con IA, etc.</div>
+    <div class="options">
+      <label class="option-label"><input type="radio" name="ia" value="No sé qué es, pero tengo curiosidad"> No sé qué es la IA, pero tengo curiosidad 🙂</label>
+      <label class="option-label"><input type="radio" name="ia" value="He escuchado pero nunca la he usado"> He escuchado de ella pero nunca la he usado</label>
+      <label class="option-label"><input type="radio" name="ia" value="La he usado 1–2 veces"> La he usado una o dos veces, muy por encima</label>
+      <label class="option-label"><input type="radio" name="ia" value="La uso de vez en cuando"> La uso de vez en cuando</label>
+      <label class="option-label"><input type="radio" name="ia" value="La uso seguido y quiero aprender más"> Ya la uso seguido y quiero aprender más</label>
+    </div>
+  </div>
+
+  <!-- P7: Qué quieren aprender -->
+  <div class="card">
+    <div class="q-number">7</div>
+    <div class="q-label">¿Qué te gustaría hacer o aprender con la IA?</div>
+    <div class="q-hint">Marca todo lo que te llame la atención.</div>
+    <div class="options">
+      <label class="option-label"><input type="checkbox" name="aprender" value="Platicar o desahogarme"> Tener alguien con quien platicar o desahogarme cuando me sienta sola/o</label>
+      <label class="option-label"><input type="checkbox" name="aprender" value="Información de salud y cuidados"> Aprender a buscar información de salud y cuidados</label>
+      <label class="option-label"><input type="checkbox" name="aprender" value="Escribir mensajes y cartas"> Escribir mensajes, cartas o notas bonitas</label>
+      <label class="option-label"><input type="checkbox" name="aprender" value="Crear recuerdos y álbumes"> Crear recuerdos: álbumes, videos, historias familiares</label>
+      <label class="option-label"><input type="checkbox" name="aprender" value="Aprender cosas y retomar hobbies"> Aprender cosas nuevas o retomar hobbies</label>
+      <label class="option-label"><input type="checkbox" name="aprender" value="Organizarme mejor"> Organizarme mejor (recordatorios, listas, citas)</label>
+      <label class="option-label"><input type="checkbox" name="aprender" value="Trabajo o negocio"> Usar la IA para el trabajo o negocio</label>
+      <label class="option-label">
+        <input type="checkbox" name="aprender" value="Otro">
+        <div style="flex:1">Otra cosa:
+          <input type="text" id="aprender-otro" class="text-input" style="height:36px;margin-top:4px;" placeholder="Cuéntame...">
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!-- P8: Días disponibles -->
+  <div class="card">
+    <div class="q-number">8</div>
+    <div class="q-label">¿Qué días de la semana te acomodan mejor?</div>
+    <div class="q-hint">Marca todos los que puedas.</div>
+    <div class="days-grid">
+      <label class="day-option"><input type="checkbox" name="dias" value="Lunes"> Lunes</label>
+      <label class="day-option"><input type="checkbox" name="dias" value="Martes"> Martes</label>
+      <label class="day-option"><input type="checkbox" name="dias" value="Miércoles"> Miércoles</label>
+      <label class="day-option"><input type="checkbox" name="dias" value="Jueves"> Jueves</label>
+      <label class="day-option"><input type="checkbox" name="dias" value="Viernes"> Viernes</label>
+      <label class="day-option"><input type="checkbox" name="dias" value="Sábado"> Sábado</label>
+      <label class="day-option"><input type="checkbox" name="dias" value="Domingo"> Domingo</label>
+    </div>
+    <div style="margin-top:14px;">
+      <div class="q-label" style="font-size:14px;margin-bottom:8px;">¿Y en qué horario?</div>
+      <div class="horario-row">
+        <label class="option-label" style="min-width:140px;"><input type="radio" name="hora" value="Mañana (antes del mediodía)"> 🌅 Mañana</label>
+        <label class="option-label" style="min-width:140px;"><input type="radio" name="hora" value="Tarde (12–5 pm)"> ☀️ Tarde</label>
+        <label class="option-label" style="min-width:140px;"><input type="radio" name="hora" value="Noche (después de las 5)"> 🌙 Noche</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- P9: Expectativas -->
+  <div class="card">
+    <div class="q-number">9</div>
+    <div class="q-label">¿Qué te gustaría sentir o lograr al terminar las clases?</div>
+    <div class="q-hint">En tus propias palabras, sin presión. 💛</div>
+    <textarea id="expectativas" class="text-input" rows="3" placeholder="Escribe aquí lo que se te venga a la mente..."></textarea>
+  </div>
+
+  <!-- P10: Algo más -->
+  <div class="card">
+    <div class="q-number">10</div>
+    <div class="q-label">¿Hay algo que me quieras contar o alguna duda antes de empezar?</div>
+    <div class="q-hint">Si tienes algún miedo, limitación o simplemente quieres presentarte, este espacio es tuyo.</div>
+    <textarea id="comentario" class="text-input" rows="3" placeholder="Lo que quieras compartir..."></textarea>
+  </div>
+
+  <!-- ── BOTÓN ENVIAR ── -->
+  <div class="submit-area">
+    <button class="btn-enviar" id="btnEnviar" onclick="enviarFormulario()">
+      Enviar mis respuestas 💛
+    </button>
+  </div>
+
+  <!-- MENSAJES DE ESTADO -->
+  <div class="msg msg-enviando" id="msgEnviando">⏳ Enviando tus respuestas, un momentito…</div>
+
+  <div class="msg msg-exito" id="msgExito">
+    <strong>¡Listo! 🎉</strong>
+    Recibí tus respuestas. Muchas gracias por tomarte el tiempo.<br>
+    Nos vemos pronto en clase. ¡Va a estar muy bueno! 💛
+  </div>
+
+  <div class="msg msg-error" id="msgError">
+    😕 Algo salió mal al enviar. Por favor intenta de nuevo o avísale a Angie directamente.
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-note" id="footerNota">
+    <strong>¡Gracias por tomarte el tiempo! 💛</strong>
+    <p>Con tus respuestas voy a preparar clases pensadas justo para ti y para el grupo. Estaremos aprendiendo juntas y juntos a nuestro ritmo, sin prisa y sin miedo.</p>
+  </div>
+
+</div>
+
+<script>
+  // ────────────────────────────────────────────────────
+  // ⚠️  PASO FINAL: reemplaza el texto de abajo
+  //     con la URL que te dará Google Apps Script
+  // ────────────────────────────────────────────────────
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZp8unTpwuboqE72ldwAMNkwlbZ7LZV6g04UYeHCl3Qhb0iQzESSzIc4-EO_ATD0Pg/exec";
+
+  function recolectarDatos() {
+    return {
+      nombre:         document.getElementById("nombre").value.trim(),
+      edad:           document.querySelector('input[name="edad"]:checked')?.value || "",
+      ocupacion:      [...document.querySelectorAll('input[name="ocupacion"]:checked')].map(e => e.value).join(", "),
+      ocup_otro:      document.getElementById("ocup-otro").value.trim(),
+      dispositivo:    [...document.querySelectorAll('input[name="dispositivo"]:checked')].map(e => e.value).join(", "),
+      comodidad_tech: document.querySelector('input[name="tech"]:checked')?.value || "",
+      conoce_ia:      document.querySelector('input[name="ia"]:checked')?.value  || "",
+      quiere_aprender:[...document.querySelectorAll('input[name="aprender"]:checked')].map(e => e.value).join(", "),
+      aprender_otro:  document.getElementById("aprender-otro").value.trim(),
+      dias:           [...document.querySelectorAll('input[name="dias"]:checked')].map(e => e.value).join(", "),
+      horario:        document.querySelector('input[name="hora"]:checked')?.value || "",
+      expectativas:   document.getElementById("expectativas").value.trim(),
+      comentario:     document.getElementById("comentario").value.trim(),
+      fecha:          new Date().toLocaleString("es-MX", { timeZone: "America/Mexico_City" })
+    };
+  }
+
+  async function enviarFormulario() {
+    if (!document.getElementById("nombre").value.trim()) {
+      alert("Por favor escribe tu nombre antes de enviar 😊");
+      return;
+    }
+
+    const btn = document.getElementById("btnEnviar");
+    btn.disabled = true;
+    btn.textContent = "Enviando… ⏳";
+
+    document.getElementById("msgEnviando").classList.add("visible");
+    document.getElementById("msgExito").classList.remove("visible");
+    document.getElementById("msgError").classList.remove("visible");
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(recolectarDatos())
+      });
+
+      document.getElementById("msgEnviando").classList.remove("visible");
+      document.getElementById("msgExito").classList.add("visible");
+      document.getElementById("footerNota").style.display = "none";
+      btn.style.display = "none";
+
+    } catch (err) {
+      document.getElementById("msgEnviando").classList.remove("visible");
+      document.getElementById("msgError").classList.add("visible");
+      btn.disabled = false;
+      btn.textContent = "Intentar de nuevo";
+    }
+  }
+</script>
+</body>
+</html>
