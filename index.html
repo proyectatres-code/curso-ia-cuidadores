@@ -267,7 +267,46 @@
     <input type="text" id="nombre" class="text-input" placeholder="Tu nombre aquí..." style="height: 48px;">
   </div>
 
-  <!-- P2: Edad -->
+  <!-- P2: País -->
+  <div class="card">
+    <div class="q-number">2</div>
+    <div class="q-label">¿De qué país eres?</div>
+    <div class="q-hint">Selecciona tu país de residencia actual.</div>
+    <select id="pais" class="text-input" style="height:48px;cursor:pointer;appearance:auto;">
+      <option value="">— Elige tu país —</option>
+      <option value="México">🇲🇽 México</option>
+      <option value="Argentina">🇦🇷 Argentina</option>
+      <option value="Bolivia">🇧🇴 Bolivia</option>
+      <option value="Chile">🇨🇱 Chile</option>
+      <option value="Colombia">🇨🇴 Colombia</option>
+      <option value="Costa Rica">🇨🇷 Costa Rica</option>
+      <option value="Cuba">🇨🇺 Cuba</option>
+      <option value="Ecuador">🇪🇨 Ecuador</option>
+      <option value="El Salvador">🇸🇻 El Salvador</option>
+      <option value="España">🇪🇸 España</option>
+      <option value="Guatemala">🇬🇹 Guatemala</option>
+      <option value="Honduras">🇭🇳 Honduras</option>
+      <option value="Nicaragua">🇳🇮 Nicaragua</option>
+      <option value="Panamá">🇵🇦 Panamá</option>
+      <option value="Paraguay">🇵🇾 Paraguay</option>
+      <option value="Perú">🇵🇪 Perú</option>
+      <option value="Puerto Rico">🇵🇷 Puerto Rico</option>
+      <option value="República Dominicana">🇩🇴 República Dominicana</option>
+      <option value="Uruguay">🇺🇾 Uruguay</option>
+      <option value="Venezuela">🇻🇪 Venezuela</option>
+      <option value="Otro">🌎 Otro</option>
+    </select>
+  </div>
+
+  <!-- P3: WhatsApp -->
+  <div class="card">
+    <div class="q-number">3</div>
+    <div class="q-label">¿Cuál es tu número de WhatsApp?</div>
+    <div class="q-hint">Incluye el código de tu país. Ejemplo: +52 para México, +54 Argentina, +57 Colombia…</div>
+    <input type="tel" id="whatsapp" class="text-input" placeholder="Ej. +52 477 123 4567" style="height:48px;">
+  </div>
+
+  <!-- P4: Edad -->
   <div class="card">
     <div class="q-number">2</div>
     <div class="q-label">¿En qué rango de edad estás?</div>
@@ -279,9 +318,9 @@
     </div>
   </div>
 
-  <!-- P3: Ocupación -->
+  <!-- P5: Ocupación -->
   <div class="card">
-    <div class="q-number">3</div>
+    <div class="q-number">5</div>
     <div class="q-label">¿A qué te dedicas actualmente?</div>
     <div class="q-hint">Puedes marcar más de una si aplica.</div>
     <div class="options">
@@ -299,9 +338,9 @@
     </div>
   </div>
 
-  <!-- P4: Dispositivo -->
+  <!-- P6: Dispositivo -->
   <div class="card">
-    <div class="q-number">4</div>
+    <div class="q-number">6</div>
     <div class="q-label">¿Con qué dispositivo sueles conectarte?</div>
     <div class="q-hint">Marca todos los que tengas disponibles.</div>
     <div class="options inline">
@@ -312,9 +351,9 @@
     </div>
   </div>
 
-  <!-- P5: Comodidad tecnológica -->
+  <!-- P7: Comodidad tecnológica -->
   <div class="card">
-    <div class="q-number">5</div>
+    <div class="q-number">7</div>
     <div class="q-label">¿Qué tan cómoda/o te sientes usando el celular o la computadora?</div>
     <div class="scale">
       <span class="scale-label">Poco 😬</span>
@@ -329,9 +368,9 @@
     </div>
   </div>
 
-  <!-- P6: Conoce IA -->
+  <!-- P8: Conoce IA -->
   <div class="card">
-    <div class="q-number">6</div>
+    <div class="q-number">8</div>
     <div class="q-label">¿Has escuchado o usado alguna herramienta de Inteligencia Artificial?</div>
     <div class="q-hint">Como ChatGPT, Gemini, Copilot, filtros de fotos con IA, etc.</div>
     <div class="options">
@@ -343,9 +382,9 @@
     </div>
   </div>
 
-  <!-- P7: Qué quieren aprender -->
+  <!-- P9: Qué quieren aprender -->
   <div class="card">
-    <div class="q-number">7</div>
+    <div class="q-number">9</div>
     <div class="q-label">¿Qué te gustaría hacer o aprender con la IA?</div>
     <div class="q-hint">Marca todo lo que te llame la atención.</div>
     <div class="options">
@@ -365,9 +404,9 @@
     </div>
   </div>
 
-  <!-- P8: Días disponibles -->
+  <!-- P10: Días disponibles -->
   <div class="card">
-    <div class="q-number">8</div>
+    <div class="q-number">10</div>
     <div class="q-label">¿Qué días de la semana te acomodan mejor?</div>
     <div class="q-hint">Marca todos los que puedas.</div>
     <div class="days-grid">
@@ -389,17 +428,17 @@
     </div>
   </div>
 
-  <!-- P9: Expectativas -->
+  <!-- P11: Expectativas -->
   <div class="card">
-    <div class="q-number">9</div>
+    <div class="q-number">11</div>
     <div class="q-label">¿Qué te gustaría sentir o lograr al terminar las clases?</div>
     <div class="q-hint">En tus propias palabras, sin presión. 💛</div>
     <textarea id="expectativas" class="text-input" rows="3" placeholder="Escribe aquí lo que se te venga a la mente..."></textarea>
   </div>
 
-  <!-- P10: Algo más -->
+  <!-- P12: Algo más -->
   <div class="card">
-    <div class="q-number">10</div>
+    <div class="q-number">12</div>
     <div class="q-label">¿Hay algo que me quieras contar o alguna duda antes de empezar?</div>
     <div class="q-hint">Si tienes algún miedo, limitación o simplemente quieres presentarte, este espacio es tuyo.</div>
     <textarea id="comentario" class="text-input" rows="3" placeholder="Lo que quieras compartir..."></textarea>
@@ -443,6 +482,8 @@
   function recolectarDatos() {
     return {
       nombre:         document.getElementById("nombre").value.trim(),
+      pais:           document.getElementById("pais").value,
+      whatsapp:       document.getElementById("whatsapp").value.trim(),
       edad:           document.querySelector('input[name="edad"]:checked')?.value || "",
       ocupacion:      [...document.querySelectorAll('input[name="ocupacion"]:checked')].map(e => e.value).join(", "),
       ocup_otro:      document.getElementById("ocup-otro").value.trim(),
@@ -457,6 +498,17 @@
       comentario:     document.getElementById("comentario").value.trim(),
       fecha:          new Date().toLocaleString("es-MX", { timeZone: "America/Mexico_City" })
     };
+  }
+
+  function limpiarFormulario() {
+    ["nombre", "whatsapp", "ocup-otro", "aprender-otro", "expectativas", "comentario"].forEach(id => {
+      document.getElementById(id).value = "";
+    });
+    document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => {
+      el.checked = false;
+    });
+    document.getElementById("pais").value = "";
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function enviarFormulario() {
@@ -481,6 +533,7 @@
         body: JSON.stringify(recolectarDatos())
       });
 
+      limpiarFormulario();
       document.getElementById("msgEnviando").classList.remove("visible");
       document.getElementById("msgExito").classList.add("visible");
       document.getElementById("footerNota").style.display = "none";
